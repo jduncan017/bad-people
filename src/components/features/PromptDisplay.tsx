@@ -8,7 +8,6 @@ interface PromptDisplayProps {
   currentPromptMode: string | null;
   revealedChars: number;
   badPrompts: string[];
-  selectedCategory: string | null;
   onDownvote: () => void;
 }
 
@@ -19,7 +18,6 @@ export function PromptDisplay({
   currentPromptMode,
   revealedChars,
   badPrompts,
-  selectedCategory,
   onDownvote,
 }: PromptDisplayProps) {
   return (
@@ -47,9 +45,7 @@ export function PromptDisplay({
           {currentPromptMode && (
             <div className="mb-3">
               <Badge variant={currentPromptMode as "drinking" | "challenge"}>
-                {currentPromptMode === "drinking"
-                  ? "🍺 Drink"
-                  : "🎭 Challenge"}
+                {currentPromptMode === "drinking" ? "🍺 Drink" : "🎭 Challenge"}
               </Badge>
             </div>
           )}
@@ -96,9 +92,7 @@ export function PromptDisplay({
         </>
       ) : (
         <p className="text-xl text-zinc-400">
-          {selectedCategory
-            ? `Select a category and click below!`
-            : `Click the button below to generate a prompt!`}
+          Click the button below to generate a prompt!
         </p>
       )}
     </Card>

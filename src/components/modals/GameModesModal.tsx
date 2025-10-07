@@ -57,17 +57,16 @@ export function GameModesModal({
           {/* Drinking Mode */}
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
             <div className="mb-3 flex items-center gap-2">
-              <span className="text-2xl">🍺</span>
-              <h4 className="text-lg font-bold text-amber-500">
+              <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
                 Drinking Mode
               </h4>
             </div>
-            <p className="mb-3 text-sm text-zinc-300">
+            <p className="mb-3 text-zinc-300">
               Mix drinking consequences into your game! Perfect for parties
               where everyone has a drink in hand.
             </p>
             <div className="mb-3">
-              <p className="mb-2 text-xs font-semibold text-zinc-400">
+              <p className="mb-2 text-sm font-semibold text-zinc-400">
                 Frequency
               </p>
               <FrequencySelector
@@ -75,7 +74,7 @@ export function GameModesModal({
                 onFrequencyChange={onDrinkingFrequencyChange}
               />
             </div>
-            <div className="space-y-1 text-xs text-zinc-400">
+            <div className="space-y-1 text-sm text-zinc-400">
               <p className="font-semibold text-zinc-300">Examples:</p>
               <p>&ldquo;Everyone drinks!&rdquo;</p>
               <p>&ldquo;Choose someone to take two drinks!&rdquo;</p>
@@ -88,17 +87,16 @@ export function GameModesModal({
           {/* Challenge Mode */}
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
             <div className="mb-3 flex items-center gap-2">
-              <span className="text-2xl">🎭</span>
-              <h4 className="text-lg font-bold text-amber-500">
+              <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
                 Challenge Mode
               </h4>
             </div>
-            <p className="mb-3 text-sm text-zinc-300">
+            <p className="mb-3 text-zinc-300">
               Add dares, performances, and physical challenges to spice things
               up!
             </p>
             <div className="mb-3">
-              <p className="mb-2 text-xs font-semibold text-zinc-400">
+              <p className="mb-2 text-sm font-semibold text-zinc-400">
                 Frequency
               </p>
               <FrequencySelector
@@ -106,7 +104,7 @@ export function GameModesModal({
                 onFrequencyChange={onChallengeFrequencyChange}
               />
             </div>
-            <div className="space-y-1 text-xs text-zinc-400">
+            <div className="space-y-1 text-sm text-zinc-400">
               <p className="font-semibold text-zinc-300">Examples:</p>
               <p>&ldquo;Do your best impression of the Dictator!&rdquo;</p>
               <p>&ldquo;Tell an embarrassing secret or lose a point!&rdquo;</p>
@@ -114,8 +112,8 @@ export function GameModesModal({
             </div>
           </div>
 
-          <div className="mt-6 rounded-lg border border-amber-500/20 bg-amber-500/10 p-4">
-            <p className="text-xs text-amber-400">
+          <div className="mt-6 rounded-lg border border-amber-500/20 bg-gradient-to-r from-orange-500/10 to-amber-500/10 p-4">
+            <p className="text-sm tracking-wider text-orange-400">
               <strong>Tip:</strong> You can enable both modes at once for
               maximum chaos, or mix them with specific categories for themed
               games!

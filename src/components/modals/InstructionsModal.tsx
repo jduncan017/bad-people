@@ -18,7 +18,7 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
         ref={modalRef}
         className="my-8 w-full max-w-2xl rounded-xl border border-zinc-800 bg-zinc-900 p-6"
       >
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between border-b border-zinc-800 pb-4">
           <h3 className="text-2xl font-bold text-white">How to Play</h3>
           <button
             onClick={onClose}
@@ -40,9 +40,9 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
             </svg>
           </button>
         </div>
-        <div className="max-h-[60vh] space-y-4 overflow-y-auto text-zinc-300">
-          <div>
-            <h4 className="mb-2 text-lg font-bold text-amber-500">
+        <div className="max-h-[60vh] space-y-3 overflow-y-auto text-zinc-300">
+          <div className="space-y-1">
+            <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
               Objective
             </h4>
             <p>
@@ -51,9 +51,11 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
             </p>
           </div>
 
-          <div>
-            <h4 className="mb-2 text-lg font-bold text-amber-500">Setup</h4>
-            <ul className="list-inside list-disc space-y-1 text-sm">
+          <div className="space-y-1">
+            <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
+              Setup
+            </h4>
+            <ul className="list-inside list-disc space-y-1 text-zinc-300">
               <li>
                 Each player chooses an Identity Card and places it face up in
                 front of them
@@ -67,14 +69,14 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
             </ul>
           </div>
 
-          <div>
-            <h4 className="mb-2 text-lg font-bold text-amber-500">
+          <div className="space-y-1">
+            <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
               How to Play
             </h4>
-            <ol className="list-inside list-decimal space-y-2 text-sm">
+            <ol className="list-inside list-decimal space-y-2 text-zinc-300">
               <li>
-                <strong>Generate a Question:</strong> The Dictator uses this
-                app to generate a random question by clicking &ldquo;Next
+                <strong>Generate a Question:</strong> The Dictator uses this app
+                to generate a random question by clicking &ldquo;Next
                 Question&rdquo;
               </li>
               <li>
@@ -95,9 +97,11 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
             </ol>
           </div>
 
-          <div>
-            <h4 className="mb-2 text-lg font-bold text-amber-500">Scoring</h4>
-            <ul className="list-inside list-disc space-y-1 text-sm">
+          <div className="space-y-1">
+            <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
+              Scoring
+            </h4>
+            <ul className="list-inside list-disc space-y-1 text-zinc-300">
               <li>
                 Players who voted the same as the Dictator receive 1 point
               </li>
@@ -109,15 +113,17 @@ export function InstructionsModal({ isOpen, onClose }: InstructionsModalProps) {
             </ul>
           </div>
 
-          <div>
-            <h4 className="mb-2 text-lg font-bold text-amber-500">Winning</h4>
-            <p className="text-sm">
+          <div className="space-y-1">
+            <h4 className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-xl font-bold text-transparent">
+              Winning
+            </h4>
+            <p className="text-zinc-300">
               The first player to score 7 points wins the game!
             </p>
           </div>
 
-          <div className="mt-6 rounded-lg border border-amber-500/20 bg-amber-500/10 p-4">
-            <p className="text-xs text-amber-400">
+          <div className="mt-6 rounded-lg border border-amber-500/20 bg-gradient-to-r from-orange-500/10 to-amber-500/10 p-4">
+            <p className="text-sm tracking-wider text-orange-400">
               <strong>Note:</strong> This digital version replaces the physical
               question cards. Use your physical Identity Cards, Voting Cards,
               and Double Down cards to play. Simply generate questions using

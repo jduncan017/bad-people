@@ -55,7 +55,6 @@ export default function HomePage() {
   const [showInstructionsModal, setShowInstructionsModal] = useState(false);
   const [showModesModal, setShowModesModal] = useState(false);
 
-
   useEffect(() => {
     fetch("/prompts.json")
       .then((res) => res.json())
@@ -214,7 +213,7 @@ export default function HomePage() {
         onConfirm={resetSession}
       />
 
-      <main className="flex flex-1 flex-col items-center justify-between bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-4 pt-24 text-white lg:p-8">
+      <main className="flex flex-1 flex-col items-center justify-between bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-4 pt-10 text-white lg:p-8">
         {/* Category Dropdown */}
         <CategorySelector
           selectedCategory={selectedCategory}
@@ -226,9 +225,9 @@ export default function HomePage() {
         <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center gap-8">
           <div className="space-y-4 text-center">
             <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
-              Bad{" "}
+              My Worst{" "}
               <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                People
+                Friends
               </span>
             </h1>
             <p className="text-base text-zinc-400 sm:text-lg">
@@ -245,7 +244,6 @@ export default function HomePage() {
               currentPromptMode={currentPromptMode}
               revealedChars={revealedChars}
               badPrompts={badPrompts}
-              selectedCategory={selectedCategory}
               onDownvote={downvotePrompt}
             />
 

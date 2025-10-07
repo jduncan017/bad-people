@@ -12,7 +12,7 @@ export function CategorySelector({
   onCategoryChange,
 }: CategorySelectorProps) {
   return (
-    <div className="mx-auto mb-6 w-full max-w-3xl">
+    <div className="mx-auto mb-6 w-full max-w-lg">
       <div className="relative">
         <select
           value={selectedCategory ?? ""}

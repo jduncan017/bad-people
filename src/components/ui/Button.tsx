@@ -12,7 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white",
+    "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white",
   secondary: "bg-zinc-800 hover:bg-zinc-700 text-white",
   danger: "bg-red-500 hover:bg-red-600 text-white",
 };
@@ -34,14 +34,8 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      disabled={disabled || loading}
-      className={`
-        rounded-full font-bold transition-all active:scale-95
-        disabled:cursor-not-allowed disabled:opacity-50
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${className}
-      `}
+      disabled={disabled ?? loading}
+      className={`cursor-pointer rounded-full font-bold shadow-[2px_2px_4px_rgba(0,0,0,0.5)] transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant]} ${sizeStyles[size]} ${className} `}
       {...props}
     >
       {loading ? "Loading..." : children}

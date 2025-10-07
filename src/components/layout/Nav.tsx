@@ -32,7 +32,10 @@ export function Nav({
     <nav className="border-b border-zinc-800 bg-zinc-950">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <h2 className="text-lg font-bold text-white">
-          Bad <span className="text-orange-500">People</span>
+          My Worst{" "}
+          <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
+            Friends
+          </span>
         </h2>
         <div className="relative">
           <button
