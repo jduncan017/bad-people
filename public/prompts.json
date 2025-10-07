@@ -1,0 +1,498 @@
+{
+  "semanticTypes": {
+    "Embarrassing: Actions": [
+      "pee in the shower",
+      "snoop through someone's phone",
+      "fake being sick",
+      "lie about reading a book",
+      "stalk an ex on social media",
+      "ghost someone",
+      "double dip",
+      "eavesdrop",
+      "pick their nose in the car",
+      "blame a fart on someone else",
+      "talk to themselves",
+      "cry during a kids' movie",
+      "pretend they didn't see someone",
+      "cancel plans with a fake excuse",
+      "eat the last slice without asking",
+      "google themselves",
+      "smell their own armpits in public"
+    ],
+    "Embarrassing: Past Actions": [
+      "peed in the shower",
+      "snooped through someone's phone",
+      "faked being sick",
+      "lied about reading a book",
+      "stalked an ex on social media",
+      "ghosted someone",
+      "double dipped",
+      "eavesdropped",
+      "picked their nose in the car",
+      "blamed a fart on someone else",
+      "talked to themselves",
+      "cried during a kids' movie",
+      "pretended they didn't see someone",
+      "canceled plans with a fake excuse",
+      "eaten the last slice without asking",
+      "googled themselves"
+    ],
+    "Embarrassing: Gerunds": [
+      "peeing in the shower",
+      "snooping through phones",
+      "faking being sick",
+      "lying about books they haven't read",
+      "stalking exes on social media",
+      "ghosting people",
+      "double dipping",
+      "eavesdropping",
+      "picking their nose in the car",
+      "blaming farts on others",
+      "talking to themselves",
+      "crying during kids' movies",
+      "googling themselves"
+    ],
+    "Embarrassing: Scenarios": [
+      "read someone's diary",
+      "use someone else's toothbrush",
+      "wear the same underwear two days in a row",
+      "eat food that fell on the floor",
+      "reuse a dirty dish",
+      "screenshot someone's embarrassing post",
+      "fake knowing a celebrity",
+      "practice conversations in the mirror",
+      "smell their own socks",
+      "sing loudly in public thinking they sound good",
+      "fake a phone call to get out of an awkward situation"
+    ],
+    "Spicy: Actions": [
+      "send nudes",
+      "have a one night stand",
+      "sleep with someone on the first date",
+      "cheat",
+      "hook up with a coworker",
+      "sleep with their ex",
+      "have a threesome",
+      "date multiple people at once",
+      "make the first move",
+      "hook up at a party",
+      "have a friends with benefits relationship",
+      "ghost after hooking up",
+      "have a secret relationship",
+      "have a situationship",
+      "rebound immediately",
+      "sleep with a friend's ex",
+      "hook up in public",
+      "join the mile high club"
+    ],
+    "Spicy: Past Actions": [
+      "sent nudes",
+      "had a one night stand",
+      "slept with someone on the first date",
+      "cheated",
+      "hooked up with a coworker",
+      "slept with their ex",
+      "had a threesome",
+      "dated multiple people at once",
+      "made the first move",
+      "hooked up at a party",
+      "had a friends with benefits relationship",
+      "ghosted after hooking up",
+      "had a secret relationship",
+      "had a situationship",
+      "rebounded immediately",
+      "slept with a friend's ex",
+      "hooked up in public",
+      "joined the mile high club"
+    ],
+    "Spicy: Gerunds": [
+      "sending nudes",
+      "having one night stands",
+      "sleeping with someone on the first date",
+      "cheating",
+      "hooking up with coworkers",
+      "sleeping with their ex",
+      "dating multiple people at once",
+      "making the first move",
+      "hooking up at parties",
+      "ghosting after hookups",
+      "having secret relationships",
+      "rebounding too quickly",
+      "sleeping with friends' exes",
+      "hooking up in public places"
+    ],
+    "Spicy: Scenarios": [
+      "get caught by their parents",
+      "get caught by a roommate",
+      "accidentally send a nude to the wrong person",
+      "accidentally post something private publicly",
+      "leave their dating app open in public",
+      "get caught looking at something spicy",
+      "share too much about their sex life",
+      "brag about their body count",
+      "lie about being experienced",
+      "lie about being inexperienced",
+      "use someone for intimacy",
+      "keep someone a secret from friends",
+      "hide a relationship from family",
+      "ignore red flags for physical attraction",
+      "stay with someone just for the physical aspect",
+      "watch adult content in public",
+      "ask someone invasive questions",
+      "give unsolicited advice about sex",
+      "pretend to be into something they're not",
+      "lead someone on for physical benefits",
+      "cause drama by hooking up with the wrong person",
+      "refuse to define the relationship",
+      "breadcrumb someone for hookups",
+      "join a dating app while in a relationship",
+      "send a risky sext to the wrong person",
+      "fake an orgasm"
+    ],
+    "Spicy: Locations": [
+      "in public",
+      "at work",
+      "in a car",
+      "at a party",
+      "on vacation",
+      "in their parents' house",
+      "in a bathroom",
+      "on a plane",
+      "on a beach",
+      "in a dressing room",
+      "in a parking lot",
+      "at a friend's place",
+      "in the woods",
+      "on a rooftop",
+      "in an elevator"
+    ],
+    "Spicy: Partners": [
+      "their ex",
+      "a coworker",
+      "their boss",
+      "someone much older",
+      "someone much younger",
+      "a friend's ex",
+      "their ex's friend",
+      "someone from a bar",
+      "someone they just met",
+      "a stranger",
+      "someone in the friend group",
+      "someone their friends don't approve of",
+      "someone their parents would hate"
+    ]
+  },
+  "templates": [
+    {
+      "pattern": "Who would {adverb} {action}?",
+      "slots": {
+        "adverb": [
+          "definitely",
+          "probably",
+          "secretly",
+          "never"
+        ],
+        "action": "Spicy: Actions"
+      }
+    },
+    {
+      "pattern": "Who would {action} on a dare?",
+      "slots": {
+        "action": "Embarrassing: Actions"
+      }
+    },
+    {
+      "pattern": "Who would {action} and not feel guilty?",
+      "slots": {
+        "action": "Spicy: Actions"
+      }
+    },
+    {
+      "pattern": "Who has {adverb} {past-action} before?",
+      "slots": {
+        "adverb": [
+          "definitely",
+          "probably",
+          "100%",
+          "secretly"
+        ],
+        "past-action": "Spicy: Past Actions"
+      }
+    },
+    {
+      "pattern": "Who has {past-action} and never told anyone?",
+      "slots": {
+        "past-action": "Embarrassing: Past Actions"
+      }
+    },
+    {
+      "pattern": "Who has {past-action} the most times?",
+      "slots": {
+        "past-action": "Spicy: Past Actions"
+      }
+    },
+    {
+      "pattern": "Who would be caught {gerund}?",
+      "slots": {
+        "gerund": "Embarrassing: Gerunds"
+      }
+    },
+    {
+      "pattern": "Who secretly enjoys {gerund}?",
+      "slots": {
+        "gerund": "Spicy: Gerunds"
+      }
+    },
+    {
+      "pattern": "Who is most likely to {scenario}?",
+      "slots": {
+        "scenario": "Spicy: Scenarios"
+      }
+    },
+    {
+      "pattern": "Who is least likely to {scenario}?",
+      "slots": {
+        "scenario": "Embarrassing: Scenarios"
+      }
+    },
+    {
+      "pattern": "Who would {scenario} and laugh about it?",
+      "slots": {
+        "scenario": "Embarrassing: Scenarios"
+      }
+    },
+    {
+      "pattern": "Who would {action} {location}?",
+      "slots": {
+        "action": "Spicy: Actions",
+        "location": "Spicy: Locations"
+      }
+    },
+    {
+      "pattern": "Who would {action} with {partner}?",
+      "slots": {
+        "action": "Spicy: Actions",
+        "partner": "Spicy: Partners"
+      }
+    },
+    {
+      "pattern": "Who would {action} {location} with {partner}?",
+      "slots": {
+        "action": "Spicy: Actions",
+        "location": "Spicy: Locations",
+        "partner": "Spicy: Partners"
+      }
+    },
+    {
+      "pattern": "Who would {action} with the person to their left?",
+      "slots": {
+        "action": "Spicy: Actions"
+      }
+    },
+    {
+      "pattern": "Who would {action} with the person to their right?",
+      "slots": {
+        "action": "Spicy: Actions"
+      }
+    },
+    {
+      "pattern": "Who would {action} with the person across from them?",
+      "slots": {
+        "action": "Spicy: Actions"
+      }
+    },
+    {
+      "pattern": "Who has {past-action} to the person on their left?",
+      "slots": {
+        "past-action": "Embarrassing: Past Actions"
+      }
+    },
+    {
+      "pattern": "Who has {past-action} to the person on their right?",
+      "slots": {
+        "past-action": "Embarrassing: Past Actions"
+      }
+    },
+    {
+      "pattern": "Who is most attracted to the person on their left?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who is most attracted to the person on their right?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who has hooked up with the person to their left?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who has hooked up with the person to their right?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who has a crush on the person across from them?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who would trust the person to their left with a secret?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who would never trust the person across from them?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who is most jealous of the person to their right?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who would date the person to their left if they were single?",
+      "slots": {}
+    },
+    {
+      "pattern": "Who thinks they're smarter than the person to their right?",
+      "slots": {}
+    }
+  ],
+  "drinkingModeTemplates": [
+    {
+      "pattern": "Choose someone to take {amount} drink{plural}!",
+      "slots": {
+        "amount": [
+          "a",
+          "two",
+          "three"
+        ],
+        "plural": [
+          "",
+          "s",
+          "s"
+        ]
+      }
+    },
+    {
+      "pattern": "Everyone drinks!",
+      "slots": {}
+    },
+    {
+      "pattern": "Dictator drinks!",
+      "slots": {}
+    },
+    {
+      "pattern": "{group} drinks!",
+      "slots": {
+        "group": [
+          "Youngest person",
+          "Oldest person",
+          "Last person to arrive",
+          "Person on your left",
+          "Person on your right",
+          "Everyone wearing black"
+        ]
+      }
+    },
+    {
+      "pattern": "Who would be most likely to {action}? They drink!",
+      "slots": {
+        "action": [
+          "black out tonight",
+          "drunk text an ex",
+          "start a fight when drunk",
+          "cry when drunk",
+          "dance on a table"
+        ]
+      }
+    },
+    {
+      "pattern": "Who's the biggest lightweight? They drink!",
+      "slots": {}
+    },
+    {
+      "pattern": "Finish your drink if you've ever {action}!",
+      "slots": {
+        "action": [
+          "gotten kicked out of a bar",
+          "blacked out",
+          "thrown up from drinking",
+          "drunk dialed someone",
+          "made out with a stranger"
+        ]
+      }
+    },
+    {
+      "pattern": "Choose two people to compete in a staring contest. Loser drinks!",
+      "slots": {}
+    }
+  ],
+  "challengeModeTemplates": [
+    {
+      "pattern": "Do your best impression of {target}!",
+      "slots": {
+        "target": [
+          "the Dictator",
+          "the person on your left",
+          "a celebrity",
+          "your mom",
+          "your dad"
+        ]
+      }
+    },
+    {
+      "pattern": "{action} or lose a point!",
+      "slots": {
+        "action": [
+          "Tell an embarrassing secret",
+          "Show your most embarrassing photo",
+          "Read your last text out loud",
+          "Call your ex",
+          "Post an embarrassing selfie"
+        ]
+      }
+    },
+    {
+      "pattern": "Everyone: {challenge}!",
+      "slots": {
+        "challenge": [
+          "share your most embarrassing moment",
+          "confess something you've never told anyone",
+          "reveal your biggest fear",
+          "say something nice about the person on your right"
+        ]
+      }
+    },
+    {
+      "pattern": "Dictator chooses someone to: {dare}",
+      "slots": {
+        "dare": [
+          "do 10 pushups",
+          "sing a song",
+          "dance for 30 seconds",
+          "speak in an accent for the next round",
+          "switch seats with someone"
+        ]
+      }
+    },
+    {
+      "pattern": "Truth or Dare: Who would most likely {action}?",
+      "slots": {
+        "action": [
+          "lie on this dare",
+          "chicken out",
+          "go through with anything",
+          "regret this tomorrow"
+        ]
+      }
+    },
+    {
+      "pattern": "Act out: {scenario}",
+      "slots": {
+        "scenario": [
+          "a dramatic breakup",
+          "a first date gone wrong",
+          "a job interview disaster",
+          "meeting your partner's parents"
+        ]
+      }
+    }
+  ]
+}
