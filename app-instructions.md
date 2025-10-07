@@ -1,133 +1,138 @@
-# Bad People Prompt Generator - Project Brief
+## DYNAMIC PROMPT GENERATOR - BUILD PLAN
 
-## Overview
+GOAL:
+We’re building a dynamic prompt generator for the game “Bad People.” The idea is to have reusable building blocks (like people, places, timeframes, etc.) and category-specific templates that can combine into endless, grammatically correct and funny prompts.
 
-Building a web app that generates random "Bad People" style prompts for party games. The game involves players voting on who in the group is most likely to do various things.
+---
 
-## Core Concept
+SYSTEM OVERVIEW
 
-Instead of running out of physical cards, we'll generate infinite variations by:
+/src
+/data
+/baseLists
+baseModifiers.ts -> generic reusable lists (people, places, etc.)
+/categories
+authorityRules.ts -> category-specific templates
+dailyLifeActivities.ts
+embarrassingMoments.ts
+/build
+buildPrompts.ts -> generates all prompts at build time
+/generated
+prompts.json -> final compiled output
 
-- Creating semantic word/phrase categories
-- Building sentence templates with constrained substitution slots
-- Randomly combining them to create sensible prompts
+---
 
-## Architecture Decision
+BASE LISTS
 
-### Chosen Approach: Semantic Type System
+We’ll maintain a set of shared, reusable lists. These lists will NEVER produce nonsense results regardless of what template uses them.
 
-- **Top Level:** 14 semantic categories of words/phrases
-- **Templates:** Sentence structures with slots that specify which semantic type fits
-- **No subtypes:** Keep it simple - each category is just an array of compatible items
-- **Storage:** JSON file (no database for now - can add later if needed)
+Each list is exported like:
+export const people = ["best friend", "coworker", "neighbor"]
 
-### Why This Approach?
+Base lists include:
 
-- More variety than manually curated combinations
-- More sensible than pure Mad Libs randomization
-- Avoids LLM costs while still getting good results
-- Can iterate and add more items easily
+- people
+- relationships
+- groups
+- places
+- contexts
+- timeframes
+- frequencyAdverbs
 
-## Semantic Categories (14 Total)
+We are NOT including actions or objects in these lists. Those will live inside specific templates.
 
-1. **Embarrassing/Taboo Actions** - socially awkward or rule-breaking behavior
-2. **Life Events** - things that happen to people (get arrested, win lottery, get married)
-3. **Personality Traits** - descriptors of character (honest, lazy, dramatic)
-4. **Social Situations** - contexts where behavior matters (at a wedding, under pressure)
-5. **Skills/Activities** - things people can be good/bad at (keeping secrets, cooking)
-6. **Relationship Dynamics** - interpersonal behaviors (ghost someone, hold grudges)
-7. **Extreme Scenarios** - hypothetical wild situations (survive apocalypse, fake death)
-8. **Daily Life Activities** - mundane things (take care of plants, remember birthdays)
-9. **Risky/Daring Behavior** - bold or boundary-pushing actions (skinny dipping, drunk texting)
-10. **Vice/Indulgence** - guilty pleasures and bad habits (overindulge, procrastinate)
-11. **Mischief/Chaos** - troublemaking that's playful (start drama, cause a scene)
-12. **Money/Materialism** - spending habits, greed, cheapness
-13. **Vanity/Appearance** - behavior around looks, social media, image
-14. **Authority/Rules** - how people relate to being told what to do
+---
 
-## Template Structure
+CATEGORY FILES
 
-Templates should follow patterns like:
+Each category (like “authorityRules” or “dailyLifeActivities”) has its own file that exports an array of template objects:
 
-```javascript
+Example:
+export const authorityRules = [
 {
-  pattern: "Who would be the {quality} person to {activity}?",
-  slots: {
-    quality: ["best", "worst", "funniest", "scariest"],
-    activity: "Skills/Activities" // references semantic category
-  }
+id: "power_trip",
+template: "Who is {most/least} likely to {actions} in front of {group}?",
+overrides: {
+actions: [
+"make up a new rule",
+"write someone a fake ticket",
+"try to start a revolution"
+],
+group: ["their coworkers", "a group of friends", "a crowd of strangers"]
 }
-```
+}
+]
 
-Common patterns from original Bad People:
+Templates can use placeholders like:
+{person}, {group}, {place}, {time}, {frequency}, {playerLeft}, {playerRight}, etc.
 
-- "Who would [verb phrase]?"
-- "Who is most/least likely to [verb phrase]?"
-- "Who would be the best/worst at [activity]?"
-- "Who would [modifier] [action]?"
+Overrides take priority over base lists.
 
-## Technical Requirements
+---
 
-### Frontend
+BUILD SCRIPT
 
-- Simple, clean UI
-- Single button: "Generate Prompt"
-- Display the generated prompt clearly
-- Optional: "Skip" button for bad combinations (can add later)
+We’ll use a Node or Bun script (`buildPrompts.ts`) that runs at build time.
 
-### Data Structure
+Steps:
 
-```javascript
+1. Import base lists and all category templates.
+2. Iterate through each template.
+3. Replace placeholders with random selections from lists.
+4. Apply overrides if they exist.
+5. Flatten all generated variations.
+6. Write the result to `/generated/prompts.json`.
+
+The app won’t generate prompts at runtime — they’re pre-built and loaded instantly.
+
+---
+
+DESIGN PRINCIPLES
+
+1. Templates must make sense regardless of what words are substituted.
+2. Each category controls its own tone and vocabulary.
+3. Base lists provide consistent quality filler words.
+4. Grammar helpers can be added later for pluralization, “a/an” correction, etc.
+5. Each template gets a unique id like: category_templateName_variantNumber
+
+---
+
+EXAMPLE OUTPUT
+
+Input:
 {
-  "semanticTypes": {
-    "Embarrassing/Taboo Actions": [...],
-    "Life Events": [...],
-    // etc
-  },
-  "templates": [
-    {
-      "pattern": "Who would {slot1} {slot2}?",
-      "slots": {
-        "slot1": ["definitely", "never", "secretly"],
-        "slot2": "Embarrassing/Taboo Actions"
-      }
-    }
-    // etc
-  ]
+id: "public_slipup",
+template: "Who is {most/least} likely to {embarrassingAction} in front of {group}?",
+overrides: {
+embarrassingAction: [
+"trip over nothing",
+"say something inappropriate",
+"spill a drink on someone",
+"accidentally like their ex’s photo"
+],
+group: ["their coworkers", "a group of friends", "their parents"]
 }
-```
+}
 
-### Logic
+Output:
+"Who is most likely to spill a drink on someone in front of their coworkers?"
 
-1. Pick random template
-2. For each slot, either:
-   - Pick from inline array if provided, OR
-   - Reference semantic category and pick random item
-3. Substitute into pattern
-4. Display result
+---
 
-### Deployment
+NEXT STEPS
 
-- Host at: badpeople.digitalnovastudio.com (subdomain)
-- Add robots.txt to disallow indexing
-- Add `<meta name="robots" content="noindex, nofollow">` to HTML
+1. Finalize all base lists.
+2. Build out 3–5 category files using this structure.
+3. Create buildPrompts.ts to compile everything.
+4. Add light validation to prevent broken or nonsensical sentences.
+5. (Optional) Add support for tone filters or difficulty weighting later.
 
-## Next Steps
+---
 
-1. **Populate semantic categories** - Add 20-50 items per category
-2. **Create 30-50 templates** - Cover different question styles
-3. **Build simple web interface** - Just HTML/CSS/JS, no framework needed
-4. **Test with friends** - See what works, what doesn't
-5. **Iterate** - Add more items/templates based on gameplay
+FUTURE IDEAS
 
-## Future Enhancements (Maybe Later)
-
-- Track shown combinations in session (browser memory)
-- "Don't show again" button for bad combos
-- Add Supabase for cross-session persistence
-- Weight less-served prompts
-- Categories/difficulty levels
-
-## Key Design Principle
-
-**Start simple, iterate based on actual gameplay.** Don't over-engineer until we know what problems actually exist.
+- Smart pluralization helper
+- Weighted randomness
+- Translations / language packs
+- “Safe mode” toggle (family-friendly filtering)
+- Prompt preview / editor UI for manual tuning

@@ -2,24 +2,20 @@
 
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
-
-type PromptsData = {
-  semanticTypes: Record<string, string[]>;
-  templates: Array<{
-    pattern: string;
-    slots: Record<string, string | string[]>;
-  }>;
-  drinkingModeTemplates: Array<{
-    pattern: string;
-    slots: Record<string, string | string[]>;
-  }>;
-  challengeModeTemplates: Array<{
-    pattern: string;
-    slots: Record<string, string | string[]>;
-  }>;
-};
-
-type ModeFrequency = "off" | "low" | "med" | "high";
+import type { PromptsData, ModeFrequency } from "~/types/prompts";
+import {
+  buildPromptPool,
+  generateUniquePrompt,
+} from "~/utils/promptGenerator";
+import {
+  calculateTotalPrompts,
+  getMostFrequentCategory,
+} from "~/utils/promptCalculator";
+import {
+  saveToLocalStorage,
+  loadFromLocalStorage,
+  clearSessionStorage,
+} from "~/utils/storage";
 
 export default function HomePage() {
   const [promptsData, setPromptsData] = useState<PromptsData | null>(null);
@@ -106,23 +102,11 @@ export default function HomePage() {
     }
 
     // Load session stats from localStorage (no size limit issues)
-    const savedShownPrompts = localStorage.getItem("shownPrompts");
-    const savedPromptHistory = localStorage.getItem("promptHistory");
-    const savedBadPrompts = localStorage.getItem("badPrompts");
-    const savedTotalGenerated = localStorage.getItem("totalGenerated");
-    const savedCategoryUsage = localStorage.getItem("categoryUsage");
-
-    if (savedShownPrompts)
-      setShownPrompts(new Set(JSON.parse(savedShownPrompts) as string[]));
-    if (savedPromptHistory)
-      setPromptHistory(JSON.parse(savedPromptHistory) as string[]);
-    if (savedBadPrompts) setBadPrompts(JSON.parse(savedBadPrompts) as string[]);
-    if (savedTotalGenerated)
-      setTotalGenerated(parseInt(savedTotalGenerated, 10));
-    if (savedCategoryUsage)
-      setCategoryUsage(
-        JSON.parse(savedCategoryUsage) as Record<string, number>,
-      );
+    setShownPrompts(new Set(loadFromLocalStorage<string[]>("shownPrompts", [])));
+    setPromptHistory(loadFromLocalStorage<string[]>("promptHistory", []));
+    setBadPrompts(loadFromLocalStorage<string[]>("badPrompts", []));
+    setTotalGenerated(loadFromLocalStorage<number>("totalGenerated", 0));
+    setCategoryUsage(loadFromLocalStorage<Record<string, number>>("categoryUsage", {}));
   }, []);
 
   // Save mode settings to cookies when they change
@@ -144,41 +128,25 @@ export default function HomePage() {
 
   // Save session stats to localStorage when they change
   useEffect(() => {
-    localStorage.setItem("shownPrompts", JSON.stringify([...shownPrompts]));
+    saveToLocalStorage("shownPrompts", [...shownPrompts]);
   }, [shownPrompts]);
 
   useEffect(() => {
-    localStorage.setItem("promptHistory", JSON.stringify(promptHistory));
+    saveToLocalStorage("promptHistory", promptHistory);
   }, [promptHistory]);
 
   useEffect(() => {
-    localStorage.setItem("badPrompts", JSON.stringify(badPrompts));
+    saveToLocalStorage("badPrompts", badPrompts);
   }, [badPrompts]);
 
   useEffect(() => {
-    localStorage.setItem("totalGenerated", totalGenerated.toString());
+    saveToLocalStorage("totalGenerated", totalGenerated);
   }, [totalGenerated]);
 
   useEffect(() => {
-    localStorage.setItem("categoryUsage", JSON.stringify(categoryUsage));
+    saveToLocalStorage("categoryUsage", categoryUsage);
   }, [categoryUsage]);
 
-  // Calculate total possible prompts
-  const calculateTotalPrompts = (data: PromptsData): number => {
-    let total = 0;
-    data.templates.forEach((template) => {
-      let combinations = 1;
-      Object.values(template.slots).forEach((slot) => {
-        if (Array.isArray(slot)) {
-          combinations *= slot.length;
-        } else if (typeof slot === "string") {
-          combinations *= data.semanticTypes[slot]?.length ?? 0;
-        }
-      });
-      total += combinations;
-    });
-    return total;
-  };
 
   useEffect(() => {
     fetch("/prompts.json")
@@ -215,11 +183,6 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [currentPrompt]);
 
-  const getMostFrequentCategory = () => {
-    if (Object.keys(categoryUsage).length === 0) return "None yet";
-    const sorted = Object.entries(categoryUsage).sort((a, b) => b[1] - a[1]);
-    return sorted[0]?.[0] ?? "None";
-  };
 
   const generatePrompt = () => {
     if (!promptsData || isGenerating) return;
@@ -237,109 +200,28 @@ export default function HomePage() {
 
     // Small delay to ensure state updates
     setTimeout(() => {
-      let result = "";
-      let usedCategory: string | null = null;
-      let attempts = 0;
-      const maxAttempts = 1000;
-      let foundUnique = false;
+      // Build pool of available prompts
+      const promptPool = buildPromptPool(
+        promptsData,
+        selectedCategory,
+        drinkingModeFrequency,
+        challengeModeFrequency,
+      );
 
-      // Build template pool based on mode frequencies
-      const frequencyMultipliers = { off: 0, low: 1, med: 2, high: 4 };
-
-      let templates = [...promptsData.templates];
-
-      // Add drinking mode templates based on frequency
-      const drinkingMultiplier = frequencyMultipliers[drinkingModeFrequency];
-      for (let i = 0; i < drinkingMultiplier; i++) {
-        templates = [...templates, ...promptsData.drinkingModeTemplates];
-      }
-
-      // Add challenge mode templates based on frequency
-      const challengeMultiplier = frequencyMultipliers[challengeModeFrequency];
-      for (let i = 0; i < challengeMultiplier; i++) {
-        templates = [...templates, ...promptsData.challengeModeTemplates];
-      }
-
-      // Track which pool the template comes from
-      const templateSources: ("drinking" | "challenge" | null)[] =
-        templates.map((t, idx) => {
-          if (idx < promptsData.templates.length) return null;
-          if (promptsData.drinkingModeTemplates.includes(t)) return "drinking";
-          if (promptsData.challengeModeTemplates.includes(t))
-            return "challenge";
-          return null;
-        });
-
-      // Filter by category if selected
-      let activeTemplateSources: ("drinking" | "challenge" | null)[] =
-        templateSources;
-      if (selectedCategory) {
-        const filtered: typeof templates = [];
-        const filteredSources: ("drinking" | "challenge" | null)[] = [];
-        templates.forEach((t, idx) => {
-          if (Object.values(t.slots).includes(selectedCategory)) {
-            filtered.push(t);
-            filteredSources.push(templateSources[idx] ?? null);
-          }
-        });
-        templates = filtered;
-        activeTemplateSources = filteredSources;
-      }
-
-      if (templates.length === 0) {
+      if (promptPool.length === 0) {
         setIsGenerating(false);
         return;
       }
 
-      // Try to generate a unique prompt
-      while (attempts < maxAttempts && !foundUnique) {
-        // Pick random template
-        const templateIndex = Math.floor(Math.random() * templates.length);
-        const template = templates[templateIndex];
-        if (!template) continue;
-
-        // Determine if this is a mode template
-        const templateSource = activeTemplateSources[templateIndex];
-        if (templateSource) {
-          setCurrentPromptMode(templateSource);
-        } else {
-          setCurrentPromptMode(null);
-        }
-
-        result = template.pattern;
-        usedCategory = null;
-
-        // Fill in each slot
-        for (const [slotName, slotValue] of Object.entries(template.slots)) {
-          let replacement: string;
-
-          if (Array.isArray(slotValue)) {
-            // Inline array - pick random item
-            replacement =
-              slotValue[Math.floor(Math.random() * slotValue.length)]!;
-          } else {
-            // Reference to semantic category
-            const category = promptsData.semanticTypes[slotValue];
-            if (!category) continue;
-            replacement =
-              category[Math.floor(Math.random() * category.length)]!;
-            usedCategory = slotValue; // Track the category used
-          }
-
-          result = result.replace(`{${slotName}}`, replacement);
-        }
-
-        // Check if we've seen this prompt before
-        if (!shownPrompts.has(result)) {
-          foundUnique = true;
-          break;
-        }
-
-        attempts++;
-      }
+      // Generate unique prompt
+      const { prompt, category, mode } = generateUniquePrompt(
+        promptPool,
+        promptsData,
+        shownPrompts,
+      );
 
       // If we couldn't find a unique prompt, all have been exhausted
-      if (!foundUnique) {
+      if (!prompt) {
         setAllPromptsExhausted(true);
         setCurrentPrompt(
           "🎉 You've seen all the prompts! Click again to restart.",
@@ -349,16 +231,17 @@ export default function HomePage() {
       }
 
       // Update state
-      setCurrentPrompt(result);
-      setShownPrompts((prev) => new Set([...prev, result]));
-      setPromptHistory((prev) => [result, ...prev]);
+      setCurrentPrompt(prompt);
+      setCurrentPromptMode(mode);
+      setShownPrompts((prev) => new Set([...prev, prompt]));
+      setPromptHistory((prev) => [prompt, ...prev]);
       setTotalGenerated((prev) => prev + 1);
 
       // Track category usage
-      if (usedCategory) {
+      if (category) {
         setCategoryUsage((prev) => ({
           ...prev,
-          [usedCategory]: (prev[usedCategory] ?? 0) + 1,
+          [category]: (prev[category] ?? 0) + 1,
         }));
       }
 
@@ -404,11 +287,7 @@ export default function HomePage() {
     setIsMenuOpen(false);
 
     // Clear session data from localStorage
-    localStorage.removeItem("shownPrompts");
-    localStorage.removeItem("promptHistory");
-    localStorage.removeItem("badPrompts");
-    localStorage.removeItem("totalGenerated");
-    localStorage.removeItem("categoryUsage");
+    clearSessionStorage();
   };
 
   return (
@@ -927,7 +806,7 @@ export default function HomePage() {
 
       <main className="flex flex-1 flex-col items-center justify-between bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-4 pt-24 text-white lg:p-8">
         {/* Category Dropdown */}
-        <div className="mx-auto mb-6 w-full max-w-md">
+        <div className="mx-auto mb-6 w-full max-w-3xl">
           <div className="relative">
             <select
               value={selectedCategory ?? ""}
@@ -936,9 +815,9 @@ export default function HomePage() {
             >
               <option value="">All Categories</option>
               {promptsData &&
-                Object.keys(promptsData.semanticTypes).map((category) => (
+                Object.keys(promptsData.categories).map((category) => (
                   <option key={category} value={category}>
-                    {category}
+                    {promptsData.categoryDisplayNames[category] ?? category}
                   </option>
                 ))}
             </select>
@@ -956,6 +835,16 @@ export default function HomePage() {
                 />
               </svg>
             </div>
+          </div>
+          {/* Category Description */}
+          <div className="mt-3 text-center">
+            {selectedCategory && promptsData ? (
+              <p className="text-base font-medium text-zinc-300">
+                {promptsData.categoryDescriptions[selectedCategory]}
+              </p>
+            ) : (
+              <p className="text-base font-medium text-zinc-500">Showing all categories</p>
+            )}
           </div>
         </div>
 
@@ -1093,7 +982,12 @@ export default function HomePage() {
                     Most Frequent Category:{" "}
                   </span>
                   <span className="text-xs font-bold text-orange-500">
-                    {getMostFrequentCategory()}
+                    {promptsData
+                      ? getMostFrequentCategory(
+                          categoryUsage,
+                          promptsData.categoryDisplayNames,
+                        )
+                      : "None yet"}
                   </span>
                 </div>
                 <div>
