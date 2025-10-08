@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       "The party game that reveals who your friends really are. Generate unlimited My Worst Friends game prompts instantly.",
     images: [
       {
-        url: "/bad-people-og.jpg",
+        url: "/wf-og.jpg",
         width: 1200,
         height: 630,
         alt: "My Worst Friends - The party game that reveals who your friends really are",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "My Worst Friends - Party Game Prompt Generator",
     description:
       "The party game that reveals who your friends really are. Generate unlimited My Worst Friends game prompts instantly.",
-    images: ["/bad-people-og.jpg"],
+    images: ["/wf-og.jpg"],
   },
 };
 

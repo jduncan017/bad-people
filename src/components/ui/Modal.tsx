@@ -32,7 +32,10 @@ export function Modal({
     if (!isOpen) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -63,9 +66,11 @@ export function Modal({
         ref={modalRef}
         className={`my-8 w-full ${maxWidthStyles[maxWidth]} rounded-xl border border-zinc-800 bg-zinc-900 p-6`}
       >
-        {(title || showCloseButton) && (
+        {(title ?? showCloseButton) && (
           <div className="mb-4 flex items-center justify-between">
-            {title && <h3 className="text-2xl font-bold text-white">{title}</h3>}
+            {title && (
+              <h3 className="text-2xl font-bold text-white">{title}</h3>
+            )}
             {showCloseButton && (
               <button
                 onClick={onClose}
